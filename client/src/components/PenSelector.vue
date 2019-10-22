@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <div class="float-left" v-bind:style="`height: ${radius*2}px; width:${radius*2}px;border-radius: ${radius}px;background-color:${color};border-radius:${shape==='circle'?radius*2:0}px;`"></div>
-    <input v-model="radius" type="range" min="5" max="40" v-on:change="$emit('change', radius)">
+  <div class="pen-container">
+    <div class="mb-4 pen-preview" v-bind:style="`height: ${radius*2}px; width:${radius*2}px;border-radius: ${radius}px;background-color:${color};border-radius:${shape==='circle'?radius*2:0}px;`"></div>
+    <input class="pen-slider" v-model="radius" type="range" min="5" max="30" v-on:change="$emit('change', radius)" orient="vertical">
   </div>
 </template>
 
@@ -14,15 +14,29 @@ export default {
       shape: "circle",
     };
   },
+  watch:  {
+    radius(val) {
+      console.log(val);
+    }
+  }
 }
 </script>
 
 <style scoped>
-.container {
-  border: 1px solid lightgray;
-  padding: 0.5rem;
-  vertical-align: middle;
-  border-radius: 0.25rem;
-  overflow: hidden;
+.pen-preview {
+  margin: auto;
+  width: 50%;
+}
+
+.pen-slider {
+  margin: auto;
+  width: 50%;
+}
+
+input[type=range][orient=vertical] {
+  writing-mode: bt-lr; /* IE */
+  -webkit-appearance: slider-vertical; /* WebKit */
+  height: 175px;
+  padding: 0 5px;
 }
 </style>

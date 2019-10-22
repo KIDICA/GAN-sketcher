@@ -1,57 +1,62 @@
 <template>
   <div>
     <div class="row">
-      <div class="col">
-        <div class="card border-success rounded-1">
-          <div class="card-header p-2 bg-success text-white rounded-1">Draw</div>
-          <div class="card-body p-2">
-            <div class="row">
-              <div class="col">
-                <toolbar v-bind:button-list="buttons" class="text-left" v-on:select="toolbarSelect"></toolbar>
-              </div>
-              <div class="col">
-                <pen-selector ref="penSelector" class="text-right" :color="penInfo.color" v-on:change="penChange"></pen-selector>
-              </div>
-            </div>
-            <hr/>
-            <painter ref="paint" v-on:mouseup="mouseUp" v-on:mousedown="mouseDown"></painter>
+      <div class="col-2">
+        <div class="card rounded-0 border-1">
+          <div class="card-header rounded-0 p-2 text-white text-left bg-color-1 rounded-0">Pen</div>
+          <div class="card-body p-0 bg-dark">
+            <picker v-on:pick="select"></picker>
           </div>
-          <div class="card-footer"
-               v-bind:style="`background-color: ${texture.color};`">
+          <div class="card-footer rounded-0 p-2" v-bind:style="`background-color: ${texture.color};`">
             <div v-bind:class="texture.text==='light'?'text-light':'text-dark'">
               Selection: <span v-text="texture.title"></span>
             </div>
           </div>
         </div>
       </div>
+
+      <div class="col pl-0">
+        <div class="card border-1 rounded-0 bg-dark">
+          <div class="card-header p-2 text-white rounded-0 bg-color-2">Draw</div>
+          <div class="card-body p-3">
+            <div class="row text-left">
+              <div class="col">
+                <toolbar v-bind:button-list="buttons" class="mb-3" v-on:select="toolbarSelect"></toolbar>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-10 text-left">
+                <painter ref="paint" v-on:mouseup="mouseUp" v-on:mousedown="mouseDown"></painter>
+              </div>
+              <div class="col">
+                <pen-selector ref="penSelector" :color="penInfo.color" v-on:change="penChange"></pen-selector>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="col-1 m-0 p-0">
-        <button class="btn btn-dark pl-0 pr-0 h-100" v-on:click="convert">
+        <button class="btn btn-warning border-dark rounded-0 pl-0 pr-0 font-weight-bold" v-on:click="convert">
           <span style="font-size: 500%">
             &rarr;
           </span>
           Convert
         </button>
       </div>
+
       <div class="col">
-        <div class="card border-info h-100 rounded-1">
-          <div class="card-header p-2 bg-info text-white rounded-1">Image Synthesis</div>
-          <div class="card-body p-2  d-flex h-100 mx-auto">
-            <h1 v-show="!image" class="w-100 justify-content-center align-self-center">No Image Yet.</h1>
-            <img v-show="image" class="border border-light justify-content-center align-self-center" :src="image" height="400" width="400"/>
+        <div class="card border-1 h-100 rounded-0 bg-dark">
+          <div class="card-header p-2 text-white rounded-0 bg-color-3">Image Synthesis</div>
+          <div class="card-body p-3 d-flex h-100 mx-auto text-white">
+            <h1 v-show="!image" class="w-100 justify-content-center align-self-center">No Image
+              Yet.</h1>
+            <img alt="Generated Image" v-show="image" class="border border-light justify-content-center align-self-center" :src="image" height="400" width="400"/>
             <busy ref="busy"></busy>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row mt-2">
-      <div class="col">
-        <div class="card border-primary rounded-1">
-          <div class="card-header rounded-1 p-2 bg-primary text-white text-left">Pen</div>
-          <div class="card-body p-2">
-            <picker v-on:pick="select"></picker>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
 </template>
@@ -75,10 +80,12 @@ export default {
   data() {
     return {
       image: false,
-      buttons: ["pen", "eraser", "fill-drip", "undo", "redo", "trash", ["Shape", "Circle", "Square"]],
+      buttons: ["pen", "eraser", "eye-dropper", "fill-drip", "undo", "redo", "trash", ["Shape", "Circle", "Square"]],
       penInfo: { color: "black" },
       toolbar: { selection: "" },
       texture: { title: "None", color: "", text: "dark" },
+      // draw,pick
+      mode: "draw",
       // Beware that each item is pixel data stored in RAM (stored onmouseup).
       stack: {
         undo: [],
@@ -135,6 +142,9 @@ export default {
     filldrip() {
       this.$refs.paint.mode = "fill";
     },
+    eyedropper() {
+      this.mode = "pick";
+    },
     toolbarSelect(selection) {
       const method = selection.toLowerCase().replace(/[^a-z]/g, "");
       this[method]();
@@ -167,8 +177,19 @@ export default {
 </script>
 
 <style scoped>
-.keep-bottom {
-  bottom: 1rem;
-  position: absolute;
+.bg-color-1 {
+  background: #df3e73;
+}
+
+.bg-color-2 {
+  background: #541c44;
+}
+
+.bg-color-3 {
+  background: #a2549c;
+}
+
+.border-1 {
+  border: 2px solid black;
 }
 </style>

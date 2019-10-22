@@ -3,11 +3,9 @@
     <button
       v-for="texture in textures"
       v-bind:style="'background-color:'+texture.color"
-      class="btn btn-default rounded-4 shadow-sm border-light float-left"
+      class="btn w-50 btn-default rounded-0 border-dark shadow-sm float-left"
       v-bind:class="texture.text==='light' ? 'text-white' : 'text-dark'"
-      v-text="texture.title"
-      v-on:click="pick(texture)">
-    </button>
+      v-on:click="pick(texture)" v-text="texture.title"></button>
   </div>
 </template>
 
@@ -38,7 +36,7 @@ export default {
         { color: "#D2691E", title: "bridge", text: "light" },
         { color: "#8B0000", title: "roof*", text: "light" },
         { color: "#DEB887", title: "house*", text: "dark" },
-        { color: "#00CED1", title: "window-other*", text: "dark" },
+        { color: "#00CED1", title: "window", text: "dark" },
         { color: "#B22222", title: "wall-brick*", text: "light" },
         { color: "#8B4513", title: "branch", text: "light" },
         // { color: "#FF3232", title: "fire" }

@@ -10,12 +10,14 @@ import {
   faRedo,
   faTrash,
   faFillDrip,
+  faEyeDropper,
+  faPalette
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome"
 
 Vue.config.productionTip = false;
 
-library.add(faPen, faEraser, faUndo, faRedo, faTrash, faFillDrip);
+library.add(faPen, faEraser, faUndo, faRedo, faTrash, faFillDrip, faEyeDropper, faPalette);
 
 Vue.prototype.$log = {
   info(...args) {

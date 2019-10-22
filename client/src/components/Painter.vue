@@ -3,6 +3,10 @@
     <canvas class="shadow-sm" ref="c" style="border:1px solid lightgray"
             v-bind:width="size.width"
             v-bind:height="size.height"
+            v-on:touchstart="down"
+            v-on:touchend="up"
+            v-on:touchmove="move"
+            v-on:touchcancel="up"
             v-on:mouseenter="enter"
             v-on:mousedown="down"
             v-on:mouseup="up"
@@ -75,6 +79,7 @@ export default {
     /**
      * @param {number} x
      * @param {number} y
+     * @param {string} color
      */
     putPixel(x, y, color) {
       this.ctx.fillStyle = color || this.pen;
@@ -97,7 +102,7 @@ export default {
       let c;
       if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
         c = hex.substring(1).split("");
-        if (c.length == 3) {
+        if (c.length === 3) {
           c = [c[0], c[0], c[1], c[1], c[2], c[2]];
         }
         c = "0x" + c.join("");
@@ -106,7 +111,8 @@ export default {
       throw new Error("Bad Hex");
     },
     /**
-     * Rewrote the elegant recursive filling to an iterative version for performance reasons.
+     * The elegant version of this flood fill algorithm is recursive,
+     * I rewrote it to an iterative version for performance reasons.
      */
     floodFill(startX, startY, penColor, startColor) {
       const imageData = this.getData();
@@ -182,10 +188,8 @@ export default {
       this.mouseDown = true;
       this.modeFn(event);
       this.$emit("mousedown");
-      //this.pointer.show = true;
     },
-    up(event) {
-      //this.pointer.show = false;
+    up() {
       this.mouseDown = false;
       this.$emit("mouseup");
     },
@@ -221,7 +225,7 @@ export default {
       return this.$refs.c;
     },
     toJPG(q = 0.8) {
-      return this.$refs.c.toDataURL("image/jpeg", 0.8);
+      return this.$refs.c.toDataURL("image/jpeg", q);
     },
     toPNG() {
       return this.$refs.c.toDataURL("image/png");
