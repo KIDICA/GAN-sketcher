@@ -125,8 +125,8 @@ class MainApplication(tornado.web.Application):
             (r"/img/(.*)", tornado.web.StaticFileHandler, {"path": path.join(APP_FOLDER, "img")}),
             (r"/css/(.*)", tornado.web.StaticFileHandler, {"path": path.join(APP_FOLDER, "css")}),
             (r"/js/(.*)", tornado.web.StaticFileHandler, {"path": path.join(APP_FOLDER, "js")}),
-            (r"/^$", tornado.web.RedirectHandler, {"url": "/index.html"}),
-            (r"/^#(.*)", tornado.web.RedirectHandler, {"url": "/index.html#{0}"}),
+            ("/", tornado.web.RedirectHandler, {"url": "/index.html"}),
+            (r"/\/#(.*)", tornado.web.RedirectHandler, {"url": "/index.html#{0}"}),
             (r"/(.*)", tornado.web.StaticFileHandler, {"path": APP_FOLDER}),
         ])
 
